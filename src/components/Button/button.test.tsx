@@ -1,8 +1,10 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
-import Button, { ButtonProps } from './button'
+import Button, { ButtonProps, ButtonType } from './button'
+import '@testing-library/jest-dom'
+import { describe, it, expect, vi } from 'vitest'
 const defaultProps = {
-  onClick: jest.fn()
+  onClick: vi.fn()
 }
 
 const testProps: ButtonProps = {
@@ -13,7 +15,7 @@ const testProps: ButtonProps = {
 
 const disabledProps: ButtonProps = {
   disabled: true,
-  onClick: jest.fn(),
+  onClick: vi.fn(),
 }
 describe('test Button component', () => {
   it('should render the correct default button', () => {

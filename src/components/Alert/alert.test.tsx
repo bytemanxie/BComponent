@@ -1,11 +1,12 @@
 import React from 'react'
 import { config } from 'react-transition-group'
 import { render, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
 
 import Alert, { AlertProps } from './alert'
 config.disabled = true
 
-jest.mock('../Icon/icon', () => {
+vi.mock('../Icon/icon', () => {
   return (props: any) => {
     return <span>{props.icon}</span>
   }
@@ -13,7 +14,7 @@ jest.mock('../Icon/icon', () => {
 
 const testProps: AlertProps = {
   title: 'title',
-  onClose: jest.fn()
+  onClose: vi.fn()
 }
 
 const typeProps: AlertProps = {

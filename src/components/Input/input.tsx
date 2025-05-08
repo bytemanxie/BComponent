@@ -5,28 +5,28 @@ import Icon from '../Icon/icon'
 
 type InputSize = 'lg' | 'sm'
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size' > {
-  /**是否禁用 Input */
+  /**Whether to disable the Input */
   disabled?: boolean;
-  /**设置 input 大小，支持 lg 或者是 sm */
+  /**Set input size, supports lg or sm */
   size?: InputSize;
-  /**添加图标，在右侧悬浮添加一个图标，用于提示 */
+  /**Add an icon, floating on the right side, used for hints */
   icon?: IconProp;
-  /**添加前缀 用于配置一些固定组合 */
+  /**Add prefix for configuring fixed combinations */
   prepend?: string | ReactElement;
-  /**添加后缀 用于配置一些固定组合 */
+  /**Add suffix for configuring fixed combinations */
   append?: string | ReactElement;
   onChange? : (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
- * Input 输入框 通过鼠标或键盘输入内容，是最基础的表单域的包装。
+ * Input component for entering content via mouse or keyboard, a basic form field wrapper.
  * 
  * ~~~js
- * // 这样引用
+ * // Import like this
  * import { Input } from 'vikingship'
  * ~~~
  * 
- * 支持 HTMLInput 的所有基本属性
+ * Supports all basic properties of HTMLInput
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {

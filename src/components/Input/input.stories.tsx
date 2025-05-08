@@ -2,7 +2,7 @@ import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Input } from './input'
 const meta = {
-  title: 'Components/Component',
+  title: 'Components/Input',
   id: 'Input',
   component: Input,
   parameters: {
@@ -16,58 +16,65 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Component>
+} satisfies Meta<typeof Input>
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
 
-export const ADefault = Template.bind({})
-ADefault.args = {
-  placeholder: '漂亮的 Input'
+export const ADefault: Story = {
+  args: {
+    placeholder: 'Beautiful Input'
+  },
+  name: 'Default Input'
 }
-ADefault.storyName = '默认的 Input'
-export const BDisabled = Template.bind({})
-BDisabled.args = {
-  placeholder: 'disabled input',
-  disabled: true
+
+export const BDisabled: Story = {
+  args: {
+    placeholder: 'disabled input',
+    disabled: true
+  },
+  name: 'Disabled Input'
 }
-BDisabled.storyName = '被禁用的 Input'
 
-export const CIcon = Template.bind({})
-CIcon.args = {
-  placeholder: 'input with icon',
-  icon: 'search'
+export const CIcon: Story = {
+  args: {
+    placeholder: 'input with icon',
+    icon: 'search'
+  },
+  name: 'Input with Icon'
 }
-CIcon.storyName = '带图标的 Input'
 
-export const DSizeInput = () => (
-  <>
-    <Input
-      defaultValue="large size"
-      size="lg"
-    />
-    <Input
-      placeholder="small size"
-      size="sm"
-    />
-  </>
-)
-DSizeInput.storyName = '大小不同的 Input'
-export const EPandInput = () => (
-  <>
-    <Input
-      defaultValue="prepend text"
-      prepend="https://"
-    />
-    <Input
-      defaultValue="google"
-      append=".com"
-    />
-    
-  </>
-)
+export const DSizeInput: Story = {
+  render: () => (
+    <>
+      <Input
+        defaultValue="large size"
+        size="lg"
+      />
+      <Input
+        placeholder="small size"
+        size="sm"
+      />
+    </>
+  ),
+  name: 'Different Size Inputs'
+}
 
-EPandInput.storyName = '带前后缀的 Input'
+export const EPandInput: Story = {
+  render: () => (
+    <>
+      <Input
+        defaultValue="prepend text"
+        prepend="https://"
+      />
+      <Input
+        defaultValue="google"
+        append=".com"
+      />
+    </>
+  ),
+  name: 'Input with Prefix and Suffix'
+}
 
