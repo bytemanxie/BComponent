@@ -8,19 +8,18 @@ export interface ProgressProps {
   theme?: ThemeProps;
 }
 
-const Progress: FC<ProgressProps> = (props) => {
-  const {
-    percent,
-    strokeHeight,
-    showText,
-    styles,
-    theme,
-  } = props
+const Progress: FC<ProgressProps> = ({
+  percent,
+  strokeHeight = 15,
+  showText = true,
+  styles,
+  theme = "primary"
+}) => {
   return (
-    <div className="viking-progress-bar" style={styles}>
-      <div className="viking-progress-bar-outer" style={{ height: `${strokeHeight}px`}}>
+    <div className="byte-progress-bar" style={styles}>
+      <div className="byte-progress-bar-outer" style={{ height: `${strokeHeight}px`}}>
         <div 
-          className={`viking-progress-bar-inner color-${theme}`}
+          className={`byte-progress-bar-inner color-${theme}`}
           style={{width: `${percent}%`}}
         >
           {showText && <span className="inner-text">{`${percent}%`}</span>}
@@ -30,9 +29,5 @@ const Progress: FC<ProgressProps> = (props) => {
   )
 }
 
-Progress.defaultProps = {
-  strokeHeight: 15,
-  showText: true,
-  theme: "primary",
-}
+
 export default Progress;

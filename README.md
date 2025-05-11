@@ -1,12 +1,64 @@
-# React + Vite
+# Byteship Components
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React component library with TypeScript support. This library provides a set of reusable UI components to help you build beautiful and consistent web applications.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install byteship-components
+# or
+yarn add byteship-components
+```
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```jsx
+import React from 'react';
+import { Button, Menu, Icon } from 'byteship-components';
+import 'byteship-components/dist/index.css';
+
+function App() {
+  return (
+    <div>
+      <Button btnType="primary" size="lg">Click Me</Button>
+      <Icon icon="check" theme="success" />
+      
+      <Menu defaultIndex="0" mode="horizontal">
+        <Menu.Item>Home</Menu.Item>
+        <Menu.Item>About</Menu.Item>
+        <Menu.SubMenu title="Dropdown">
+          <Menu.Item>Option 1</Menu.Item>
+          <Menu.Item>Option 2</Menu.Item>
+        </Menu.SubMenu>
+      </Menu>
+    </div>
+  );
+}
+```
+
+## Available Components
+
+- **Alert**: Display important messages to users
+- **AutoComplete**: Input with auto-completion functionality
+- **Button**: Various button styles and sizes
+- **Form**: Form components with validation
+- **Icon**: Icon components using FontAwesome
+- **Input**: Text input components
+- **Menu**: Navigation menu components
+- **Progress**: Progress indicators
+- **Select**: Dropdown selection components
+- **Tabs**: Tab navigation components
+- **Transition**: Animation components
+- **Upload**: File upload components
+
+## Documentation
+
+For detailed documentation and examples, run Storybook locally:
+
+```bash
+npm run storybook
+```
+
+## License
+
+MIT

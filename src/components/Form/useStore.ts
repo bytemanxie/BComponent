@@ -3,7 +3,7 @@ import Schema, { RuleItem, ValidateError } from 'async-validator';
 import mapValues from 'lodash-es/mapValues'
 import each from 'lodash-es/each'
 
-export type CustomRuleFunc = ({ getFieldValue }) => RuleItem
+export type CustomRuleFunc = ({ getFieldValue }: { getFieldValue: (key: string) => any }) => RuleItem
 export type CustomRule = RuleItem | CustomRuleFunc
 export interface FieldDetail {
   name: string;
