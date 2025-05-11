@@ -30,10 +30,10 @@ export const ASimpleUpload = (args) => (
     {...args}
     action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
   >
-    <Button size="lg" btnType="primary"><Icon icon="upload" /> 点击上传 </Button>
+    <Button size="lg" btnType="primary"><Icon icon="upload" /> Click to Upload </Button>
   </Upload>  
 )
-ASimpleUpload.storyName = '普通的 Upload 组件'
+ASimpleUpload.storyName = 'Basic Upload Component'
 export const BCheckUpload = (args) => {
   const checkFileSize = (file: File) => {
     if (Math.round(file.size / 1024) > 50) {
@@ -48,11 +48,11 @@ export const BCheckUpload = (args) => {
       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       beforeUpload={checkFileSize}
     >
-      <Button size="lg" btnType="primary"><Icon icon="upload" /> 不能传大于50Kb！ </Button>
+      <Button size="lg" btnType="primary"><Icon icon="upload" /> Cannot upload files larger than 50Kb! </Button>
     </Upload>  
   )
 }
-BCheckUpload.storyName = '上传前检查文件大小'
+BCheckUpload.storyName = 'Check File Size Before Upload'
 export const CDragUpload = (args) => (
   <Upload
     {...args}
@@ -63,7 +63,7 @@ export const CDragUpload = (args) => (
   >
     <Icon icon="upload" size="5x" theme="secondary" />
     <br/>
-    <p>点击或者拖动到此区域进行上传</p>
+    <p>Click or drag files to this area to upload</p>
   </Upload>
 )
-CDragUpload.storyName = '拖动上传'
+CDragUpload.storyName = 'Drag and Drop Upload'

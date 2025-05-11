@@ -27,7 +27,7 @@ describe('test Alert Component', () => {
   it('should render the correct default Alert', () => {
     const { getByText, container, queryByText } = render(<Alert {...testProps}/>)
     expect(queryByText('title')).toBeInTheDocument()
-    expect(container.querySelector('.viking-alert')).toHaveClass('viking-alert-default')
+    expect(container.querySelector('.byte-alert')).toHaveClass('byte-alert-default')
     fireEvent.click(getByText('times'))
     expect(testProps.onClose).toHaveBeenCalled()
     expect(queryByText('title')).not.toBeInTheDocument()
@@ -35,7 +35,7 @@ describe('test Alert Component', () => {
   it('should render the correct Alert based on different type and description', () => {
     const { container, queryByText } = render(<Alert {...typeProps}/>)
     expect(queryByText('title')).toHaveClass('bold-title')
-    expect(container.querySelector('.viking-alert')).toHaveClass('viking-alert-success')
+    expect(container.querySelector('.byte-alert')).toHaveClass('byte-alert-success')
     expect(queryByText('hello')).toBeInTheDocument()
     expect(queryByText('times')).not.toBeInTheDocument()
   })

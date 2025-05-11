@@ -5,39 +5,38 @@ import Transition from '../Transition'
 export type AlertType = 'success' | 'default' | 'danger' | 'warning'
 
 export interface AlertProps {
-  /**标题 */
+  /**Title */
   title: string;
-  /**描述 */
+  /**Description */
   description?: string;
-  /**类型 四种可选 针对四种不同的场景 */
+  /**Type - four options for different scenarios */
   type?: AlertType;
-  /**关闭alert时触发的事件 */
+  /**Event triggered when closing the alert */
   onClose?: () => void;
-  /**是否显示关闭图标*/
+  /**Whether to show close icon */
   closable?: boolean;
 }
 
 /** 
- * 用于页面中展示重要的提示信息。 点击右侧的叉提示自动消失
- * ### 引用方法
+ * Used to display important prompt information on the page. Click the X on the right to make the prompt automatically disappear.
+ * ### Import
  * 
  * ~~~js
- * import { Alert } from 'vikingship'
+ * import { Alert } from 'byteship'
  * ~~~
 */
-export const Alert: FC<AlertProps> = (props) => {
-  const [ hide, setHide ] = useState(false)
-  const {
-    title,
-    description,
-    type,
-    onClose,
-    closable
-  } = props
-  const classes = classNames('viking-alert', {
-    [`viking-alert-${type}`]: type,
+export const Alert: FC<AlertProps> = ({
+  title,
+  description,
+  type = 'default',
+  onClose,
+  closable = true
+}) => {
+  const [hide, setHide] = useState(false)
+  const classes = classNames('byte-alert', {
+    [`byte-alert-${type}`]: type,
   })
-  const titleClass = classNames('viking-alert-title', {
+  const titleClass = classNames('byte-alert-title', {
     'bold-title': description
   })
   const handleClose = (e: React.MouseEvent) => {
@@ -54,15 +53,11 @@ export const Alert: FC<AlertProps> = (props) => {
     >
       <div className={classes}>
         <span className={titleClass}>{title}</span>
-        {description && <p className="viking-alert-desc">{description}</p>}
-        {closable && <span className="viking-alert-close" onClick={handleClose}><Icon icon="times"/></span>}
+        {description && <p className="byte-alert-desc">{description}</p>}
+        {closable && <span className="byte-alert-close" onClick={handleClose}><Icon size="xs" icon="times" /></span>}
       </div>
     </Transition>
   )
 }
 
-Alert.defaultProps = {
-  type: 'default',
-  closable: true,
-}
 export default Alert;

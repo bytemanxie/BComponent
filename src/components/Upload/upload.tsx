@@ -14,42 +14,42 @@ export interface UploadFile {
   error?: any;
 }
 export interface UploadProps {
-  /**必选参数, 上传的地址 */
+  /**Required parameter, upload URL */
   action: string;
-  /**上传的文件列表,*/
+  /**List of uploaded files */
   defaultFileList?: UploadFile[];
-  /**上传文件之前的钩子，参数为上传的文件，若返回 false 或者 Promise 则停止上传。 */
+  /**Hook before uploading files, parameter is the file to upload, if returns false or Promise, the upload will be stopped */
   beforeUpload? : (file: File) => boolean | Promise<File>;
-  /**文件上传时的钩子 */
+  /**Hook during file upload */
   onProgress?: (percentage: number, file: UploadFile) => void;
-  /**文件上传成功时的钩子 */
+  /**Hook when file upload succeeds */
   onSuccess?: (data: any, file: UploadFile) => void;
-  /**文件上传失败时的钩子 */
+  /**Hook when file upload fails */
   onError?: (err: any, file: UploadFile) => void;
-  /**文件状态改变时的钩子，上传成功或者失败时都会被调用	 */
+  /**Hook when file status changes, called when upload succeeds or fails */
   onChange?: (file: UploadFile) => void;
-  /**文件列表移除文件时的钩子 */
+  /**Hook when removing a file from the file list */
   onRemove?: (file: UploadFile) => void;
-  /**设置上传的请求头部 */
+  /**Set upload request headers */
   headers?: {[key: string]: any };
-  /**上传的文件字段名 */
+  /**Name of the file field for upload */
   name?: string;
-  /**上传时附带的额外参数 */
+  /**Additional parameters to include with upload */
   data?: {[key: string]: any };
-  /**支持发送 cookie 凭证信息 */
+  /**Support sending cookie credentials */
   withCredentials?: boolean;
-  /**可选参数, 接受上传的文件类型 */
+  /**Optional parameter, accepted file types for upload */
   accept?: string;
-  /**是否支持多选文件 */
+  /**Whether to support multiple file selection */
   multiple?: boolean;
-  /**是否支持拖拽上传 */
+  /**Whether to support drag and drop upload */
   drag?: boolean;
   children?: React.ReactNode
 }
 
 /**
- * 通过点击或者拖拽上传文件
- * ### 引用方法
+ * Upload files by clicking or dragging and dropping
+ * ### Import
  * 
  * ~~~js
  * import { Upload } from 'vikingship'

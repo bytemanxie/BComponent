@@ -1,4 +1,4 @@
-import React, { FC, useState, ChangeEvent, KeyboardEvent, ReactElement, useEffect, useRef } from 'react'
+import React, { FC, useState, ChangeEvent, KeyboardEvent, ReactElement, useEffect, useRef, RefObject } from 'react'
 import classNames from 'classnames'
 import Input, { InputProps } from '../Input/input'
 import Icon from '../Icon/icon'
@@ -11,25 +11,25 @@ interface DataSourceObject {
 export type DataSourceType<T = {}> = T & DataSourceObject
 export interface AutoCompleteProps extends Omit<InputProps, 'onSelect' | 'onChange'> {
   /**
-   * 返回输入建议的方法，可以拿到当前的输入，然后返回同步的数组或者是异步的 Promise
+   * Method to return input suggestions, can get the current input and return a synchronous array or asynchronous Promise
    * type DataSourceType<T = {}> = T & DataSourceObject
    */
   fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[]>;
-  /** 点击选中建议项时触发的回调*/
+  /** Callback triggered when a suggestion item is selected */
   onSelect?: (item: DataSourceType) => void;
-  /** 文本框发生改变的时候触发的事件*/
+  /** Event triggered when the text box changes */
   onChange?: (value: string) => void;
-  /**支持自定义渲染下拉项，返回 ReactElement */
+  /** Support custom rendering of dropdown items, returns ReactElement */
   renderOption?: (item: DataSourceType) => ReactElement;
 }
 
 /**
- * 输入框自动完成功能。当输入值需要自动完成时使用，支持同步和异步两种方式
- * 支持 Input 组件的所有属性 支持键盘事件选择
- * ### 引用方法
+ * Input box autocomplete functionality. Used when input values need to be automatically completed, supports both synchronous and asynchronous methods
+ * Supports all properties of the Input component and keyboard event selection
+ * ### Import
  * 
  * ~~~js
- * import { AutoComplete } from 'vikingship'
+ * import { AutoComplete } from 'byteship'
  * ~~~
  */
 export const AutoComplete: FC<AutoCompleteProps> = (props) => {
@@ -42,15 +42,15 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     ...restProps
   } = props
 
-  const [ inputValue, setInputValue ] = useState(value as string)
-  const [ suggestions, setSugestions ] = useState<DataSourceType[]>([])
-  const [ loading, setLoading ] = useState(false)
-  const [ showDropdown, setShowDropdown] = useState(false)
-  const [ highlightIndex, setHighlightIndex] = useState(-1)
+  const [inputValue, setInputValue] = useState(value as string)
+  const [suggestions, setSugestions] = useState<DataSourceType[]>([])
+  const [loading, setLoading] = useState(false)
+  const [showDropdown, setShowDropdown] = useState(false)
+  const [highlightIndex, setHighlightIndex] = useState(-1)
   const triggerSearch = useRef(false)
   const componentRef = useRef<HTMLDivElement>(null)
   const debouncedValue = useDebounce(inputValue, 300)
-  useClickOutside(componentRef, () => { setSugestions([])})
+  useClickOutside(componentRef as RefObject<HTMLElement>, () => { setSugestions([]) })
   useEffect(() => {
     if (debouncedValue && triggerSearch.current) {
       setSugestions([])
@@ -69,7 +69,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         setShowDropdown(true)
         if (results.length > 0) {
           setShowDropdown(true)
-        } 
+        }
       }
     } else {
       setShowDropdown(false)
@@ -84,7 +84,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     setHighlightIndex(index)
   }
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    switch(e.keyCode) {
+    switch (e.keyCode) {
       case 13:
         if (suggestions[highlightIndex]) {
           handleSelect(suggestions[highlightIndex])
@@ -129,12 +129,12 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         in={showDropdown || loading}
         animation="zoom-in-top"
         timeout={300}
-        onExited={() => {setSugestions([])}}
+        onExited={() => { setSugestions([]) }}
       >
-        <ul className="viking-suggestion-list">
-          { loading &&
-            <div className="suggstions-loading-icon">
-              <Icon icon="spinner" spin/>
+        <ul className="byte-suggestion-list">
+          {loading &&
+            <div className="suggestions-loading-icon">
+              <Icon icon="spinner" spin />
             </div>
           }
           {suggestions.map((item, index) => {
@@ -152,7 +152,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     )
   }
   return (
-    <div className="viking-auto-complete" ref={componentRef}>
+    <div className="byte-auto-complete" ref={componentRef}>
       <Input
         {...restProps}
         value={inputValue}

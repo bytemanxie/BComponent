@@ -38,7 +38,7 @@ type Story = StoryObj<typeof meta>
 // }
 // Simple.args = {
 //   fetchSuggestions: handleFetch,
-//   placeholder: "输入湖人队球员英文名试试"
+//   placeholder: "Try typing a Lakers player name"
 // }
 export const SimpleComplete: Story = {
   args: {
@@ -81,8 +81,8 @@ export const BCustomComplete = (args) => {
     const itemWithNumber = item as DataSourceType<LakerPlayerProps>
     return (
       <>
-        <b>名字: {itemWithNumber.value}</b>
-        <span>球衣号码: {itemWithNumber.number}</span>
+        <b>Name: {itemWithNumber.value}</b>
+        <span>Jersey Number: {itemWithNumber.number}</span>
       </>
     )
   }
@@ -90,12 +90,12 @@ export const BCustomComplete = (args) => {
     <AutoComplete
       {...args}
       fetchSuggestions={handleFetch}
-      placeholder="输入湖人队球员英文,自定义下拉模版"
+      placeholder="Enter Lakers player name, custom dropdown template"
       renderOption={renderOption}
     />
   )
 }
-BCustomComplete.storyName = '2 自定义搜索结果模版'
+BCustomComplete.storyName = '2 Custom Search Results Template'
 
 export const CAjaxComplete = (args) => {
   const handleFetch = (query: string) => {
@@ -119,14 +119,14 @@ export const CAjaxComplete = (args) => {
     <AutoComplete
       {...args}
       fetchSuggestions={handleFetch}
-      placeholder="输入 Github 用户名试试"
+      placeholder="Try typing a Github username"
       renderOption={renderOption}
     />
   )
 }
-CAjaxComplete.storyName = '3 支持异步搜索'
+CAjaxComplete.storyName = '3 Support Async Search'
 
-// storiesOf('第九章：AutoComplete', module)
+// storiesOf('Chapter 9: AutoComplete', module)
 //   .add('AutoComplete', simpleComplete, {info: {source: false, text: textComplete}})
-//   .add('自定义下拉选项', customComplete,  {info: {source: false, text: textCustom}})
-//   .add('异步请求Github用户名', ajaxComplete, {info: {source: false, text: textAjax}})
+//   .add('Custom Dropdown Options', customComplete,  {info: {source: false, text: textCustom}})
+//   .add('Async Request Github Username', ajaxComplete, {info: {source: false, text: textAjax}})

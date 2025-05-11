@@ -1,29 +1,30 @@
 import React from 'react'
 import { config } from 'react-transition-group'
 import { render, RenderResult, fireEvent, waitFor } from '@testing-library/react'
+import { describe, beforeEach, it, expect, vi } from 'vitest'
 import { AutoComplete, AutoCompleteProps, DataSourceType } from './autoComplete'
 
 config.disabled = true
-jest.mock('../Icon/icon', () => {
+vi.mock('../Icon/icon', () => {
   return (props: any) => {
     return <span onClick={props.onClick}>{props.icon}</span>
   }
 })
 const testArray = [
-  {value: 'ab', number: 11},
-  {value: 'abc', number: 1},
-  {value: 'b', number: 4},
-  {value: 'c', number: 15},
+  { value: 'ab', number: 11 },
+  { value: 'abc', number: 1 },
+  { value: 'b', number: 4 },
+  { value: 'c', number: 15 },
 ]
-const renderOption = (item: DataSourceType) => {
+const renderOption = (item: DataSourceType): React.ReactElement => {
   const itemWithNumber = item as DataSourceType<{ value: string; number: number }>
   return (
     <>name: {itemWithNumber.value}</>
   )
 }
 const testProps: AutoCompleteProps = {
-  fetchSuggestions: (query) => {return testArray.filter(item => item.value.includes(query))},
-  onSelect: jest.fn(),
+  fetchSuggestions: (query: string) => testArray.filter(item => item.value.includes(query)),
+  onSelect: vi.fn(),
   placeholder: 'auto-complete',
 }
 const testPropsWithCustomRender: AutoCompleteProps = {
@@ -97,7 +98,7 @@ describe('test AutoComplete component', () => {
   it('async fetchSuggestions should works fine', async () => {
     const testPropsWithPromise: AutoCompleteProps = {
       ...testProps,
-      fetchSuggestions: jest.fn((query) => { return Promise.resolve(testArray.filter(item => item.value.includes(query))) }),
+      fetchSuggestions: vi.fn((query) => Promise.resolve(testArray.filter(item => item.value.includes(query)))),
       placeholder: 'auto-complete-3',
     }
     const wrapper = render(<AutoComplete {...testPropsWithPromise}/>)
