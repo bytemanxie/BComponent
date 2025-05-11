@@ -4,11 +4,11 @@ import Icon from '../Icon'
 import { SelectContext } from './select'
 export interface SelectOptionProps {
   index?: string;
-  /** 默认根据此属性值进行筛选，该值不能相同*/
+  /** Default value used for filtering, must be unique */
   value: string;
-  /** 选项的标签，若不设置则默认与 value 相同*/
+  /** Option label, defaults to value if not set */
   label?: string;
-  /** 是否禁用该选项*/
+  /** Whether to disable this option */
   disabled?: boolean;
   children?: ReactNode;
 }
@@ -16,7 +16,7 @@ export interface SelectOptionProps {
 export const Option: FC<SelectOptionProps> = ({value, label, disabled, children, index}) => {
   const { onSelect, selectedValues, multiple } = useContext(SelectContext)
   const isSelected = selectedValues.includes(value)
-  const classes = classNames('viking-select-item', {
+  const classes = classNames('byte-select-item', {
     'is-disabled': disabled,
     'is-selected': isSelected,
   })

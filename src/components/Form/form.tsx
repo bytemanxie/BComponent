@@ -3,14 +3,14 @@ import { ValidateError } from 'async-validator'
 import useStore, { FormState }from './useStore';
 export type RenderProps = (form: FormState) => ReactNode
 export interface FormProps {
-  /**表单名称，会作为表单字段 id 前缀使用 */
+  /** Form name, will be used as prefix for form field ids */
   name?: string;
-  /**表单默认值，只有初始化以及重置时生效 */
+  /** Form default values, only takes effect during initialization and reset */
   initialValues?: Record<string, any>;
   children?: ReactNode | RenderProps;
-  /**提交表单且数据验证成功后回调事件 */
+  /** Callback after submitting the form and the data validation is successful */
   onFinish?: (values: Record<string, any>) => void;
-  /**提交表单且数据验证失败后回调事件 */
+  /** Callback after submitting the form and the data validation has failed */
   onFinishFailed?: (values: Record<string, any>, errors: Record<string, ValidateError[]>) => void;
 }
 export type IFormContext = 
@@ -19,7 +19,7 @@ export type IFormContext =
 export type IFormRef = Omit<ReturnType<typeof useStore>, 'fields' | 'dispatch' | 'form'>
 export const FormContext = createContext<IFormContext>({} as IFormContext)
 export const Form = forwardRef<IFormRef, FormProps>((props, ref) => {
-  const { name, children, initialValues, onFinish, onFinishFailed } = props
+  const { name = 'byte_form', children, initialValues, onFinish, onFinishFailed } = props
   const { form, fields, dispatch, ...restProps } = useStore(initialValues)
   const { validateField, validateAllFields } = restProps
   useImperativeHandle(ref, () => {
@@ -50,15 +50,13 @@ export const Form = forwardRef<IFormRef, FormProps>((props, ref) => {
     childrenNode = children
   }
   return (
-    <form name={name} className="viking-form" onSubmit={submitForm}>
+    <form name={name} className="byte-form" onSubmit={submitForm}>
       <FormContext.Provider value={passedContext}>
         {childrenNode}
       </FormContext.Provider>
     </form>
   )
 })
-Form.defaultProps = {
-  name: 'viking_form'
-}
+// Default props are set via destructuring in the component parameters
 
 export default Form

@@ -7,6 +7,67 @@ const meta = {
   component: Button,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: 'Button component for user interactions. Supports different sizes and types.'
+      }
+    }
+  },
+  argTypes: {
+    btnType: {
+      description: 'Type of the button',
+      control: 'select',
+      options: ['primary', 'default', 'danger', 'link'],
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' }
+      }
+    },
+    size: {
+      description: 'Size of the button',
+      control: 'select',
+      options: ['lg', 'sm', undefined],
+      table: {
+        type: { summary: 'string' }
+      }
+    },
+    disabled: {
+      description: 'Whether the button is disabled',
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' }
+      }
+    },
+    href: {
+      description: 'Link address for link button',
+      control: 'text',
+      if: { arg: 'btnType', eq: 'link' },
+      table: {
+        type: { summary: 'string' }
+      }
+    },
+    className: {
+      description: 'Additional class name for custom styling',
+      control: 'text',
+      table: {
+        type: { summary: 'string' }
+      }
+    },
+    children: {
+      description: 'Content of the button',
+      control: 'text',
+      table: {
+        type: { summary: 'React.ReactNode' }
+      }
+    },
+    onClick: {
+      description: 'Callback when button is clicked',
+      action: 'clicked',
+      table: {
+        type: { summary: 'function' }
+      }
+    }
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof Button>

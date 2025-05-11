@@ -1,13 +1,18 @@
 import React from 'react'
-import { ComponentMeta } from '@storybook/react'
-
+import type { Meta, StoryObj } from '@storybook/react'
 
 import Select from './index'
+
 const meta = {
-  title: 'Components/Component',
+  title: 'Components/Select',
   component: Select,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: 'Select component for selecting values from options.'
+      }
+    }
   },
   tags: ['autodocs'],
   id: 'Select',
@@ -19,48 +24,54 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Component>
+} satisfies Meta<typeof Select>
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const ADefaultSelect = (args) => (
-  <Select
-    {...args}
-    placeholder="请选择"
-  >
-    <Select.Option value="nihao" />
-    <Select.Option value="nihao2" />
-    <Select.Option value="nihao3" />
-    <Select.Option value="disabled" disabled/>
-    <Select.Option value="nihao5" />
-  </Select>
-)
-ADefaultSelect.storyName = '默认的Select'
-export const BMultipleSelect = (args) => (
-  <Select
-    {...args}
-    placeholder="支持多选欧！"
-    multiple
-  >
-    <Select.Option value="nihao" />
-    <Select.Option value="nihao2" />
-    <Select.Option value="nihao3" />
-    <Select.Option value="viking" />
-    <Select.Option value="viking2" />
-  </Select>
-)
-BMultipleSelect.storyName = '支持多选的 Select'
-export const CDisabledSelect = (args) => (
-  <Select
-    {...args}
-    placeholder="禁用啦！"
-    disabled
-  >
-    <Select.Option value="nihao" />
-    <Select.Option value="nihao2" />
-    <Select.Option value="nihao3" />
-  </Select>  
-)
-CDisabledSelect.storyName = '被禁用的 Select'
+export const DefaultSelect: Story = {
+  render: (args) => (
+    <Select
+      {...args}
+      placeholder="Please select"
+    >
+      <Select.Option value="option1" />
+      <Select.Option value="option2" />
+      <Select.Option value="option3" />
+      <Select.Option value="disabled" disabled/>
+      <Select.Option value="option5" />
+    </Select>
+  ),
+  name: 'Default Select'
+}
+export const MultipleSelect: Story = {
+  render: (args) => (
+    <Select
+      {...args}
+      placeholder="Multiple selection supported!"
+      multiple
+    >
+      <Select.Option value="option1" />
+      <Select.Option value="option2" />
+      <Select.Option value="option3" />
+      <Select.Option value="byte" />
+      <Select.Option value="byte2" />
+    </Select>
+  ),
+  name: 'Multiple Select'
+}
+export const DisabledSelect: Story = {
+  render: (args) => (
+    <Select
+      {...args}
+      placeholder="Disabled!"
+      disabled
+    >
+      <Select.Option value="option1" />
+      <Select.Option value="option2" />
+      <Select.Option value="option3" />
+    </Select>  
+  ),
+  name: 'Disabled Select'
+}

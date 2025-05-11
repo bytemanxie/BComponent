@@ -7,20 +7,22 @@ import Transition from '../Transition/transition'
 import { SelectOptionProps } from './option'
 
 export interface SelectProps {
-  /**指定默认选中的条目	 可以是是字符串或者字符串数组*/
+  /** Specify default selected items, can be a string or array of strings */
   defaultValue?: string | string[];
-  /** 选择框默认文字*/
+  /** Default text for the select box */
   placeholder?: string;
-  /** 是否禁用*/
+  /** Whether the Select is disabled */
   disabled?: boolean;
-  /** 是否支持多选*/
+  /** Whether to support multiple selection */
   multiple?: boolean;
-  /** select input 的 name 属性	 */
+  /** The name attribute of the select input */
   name?: string;
-  /**选中值发生变化时触发 */
+  /** Callback when selected value changes */
   onChange?: (selectedValue: string, selectedValues: string[]) => void;
-  /**下拉框出现/隐藏时触发 */
+  /** Callback when dropdown appears/disappears */
   onVisibleChange?: (visible: boolean) => void;
+  /** Width of the select component */
+  width?: string | number;
   children?: ReactNode;
 }
 
@@ -32,28 +34,30 @@ export interface ISelectContext {
 
 export const SelectContext = createContext<ISelectContext>({ selectedValues: []})
 /**
- * 下拉选择器。
- * 弹出一个下拉菜单给用户选择操作，用于代替原生的选择器，或者需要一个更优雅的多选器时。
- * ### 引用方法
+ * Dropdown selector.
+ * Displays a dropdown menu for user selection, used to replace native selectors or when a more elegant multi-selector is needed.
  * 
- * ~~~js
- * import { Select } from 'vikingship'
- * // 然后可以使用 <Select> 和 <Select.Option>
- * ~~~
+ * ### Usage
+ * 
+ * ```jsx
+ * import { Select } from 'byteship'
+ * // Then you can use <Select> and <Select.Option>
+ * ```
  */
 export const Select:FC<SelectProps> = (props) => {
   const {
     defaultValue,
-    placeholder,
+    placeholder = 'Please select',
     children,
     multiple,
-    name,
+    name = 'byte-select',
     disabled,
     onChange,
     onVisibleChange,
+    width,
   }= props
   const input = useRef<HTMLInputElement>(null)
-  const containerRef = useRef<HTMLInputElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const containerWidth = useRef(0)
   const [ selectedValues, setSelectedValues ] = useState<string[]>(Array.isArray(defaultValue)? defaultValue :[])
   const [ menuOpen, setOpen ] = useState(false)
@@ -96,7 +100,8 @@ export const Select:FC<SelectProps> = (props) => {
       containerWidth.current = containerRef.current.getBoundingClientRect().width
     }
   })
-  useClickOutside(containerRef, () => { 
+  // Use type assertion to ensure the ref is compatible with useClickOutside
+  useClickOutside(containerRef as React.RefObject<HTMLElement>, () => { 
     setOpen(false)
     if (onVisibleChange && menuOpen) {
       onVisibleChange(false)
@@ -129,14 +134,16 @@ export const Select:FC<SelectProps> = (props) => {
       }
     })
   }
-  const containerClass = classNames('viking-select', {
+  const containerClass = classNames('byte-select', {
     'menu-is-open': menuOpen,
     'is-disabled': disabled,
     'is-multiple': multiple,
   })
+  const containerStyle = width ? { width: width } : {}
+  
   return (
-    <div className={containerClass} ref={containerRef}>
-      <div className="viking-select-input" onClick={handleClick}>
+    <div className={containerClass} ref={containerRef} style={containerStyle}>
+      <div className="byte-select-input" onClick={handleClick}>
         <Input
           ref={input}
           placeholder={placeholder} 
@@ -153,17 +160,17 @@ export const Select:FC<SelectProps> = (props) => {
             animation="zoom-in-top"
             timeout={300}
           >
-          <ul className="viking-select-dropdown">
+          <ul className="byte-select-dropdown">
             {generateOptions()}
           </ul>
         </Transition>
       </SelectContext.Provider>
       {multiple &&
-        <div className="viking-selected-tags" style={{maxWidth: containerWidth.current - 32}}> 
+        <div className="byte-selected-tags" style={{maxWidth: containerWidth.current - 32}}> 
           {
             selectedValues.map((value, index) => {
               return (
-                <span className="viking-tag" key={`tag-${index}`}>
+                <span className="byte-tag" key={`tag-${index}`}>
                   {value}
                   <Icon icon="times" onClick={() => {handleOptionClick(value, true)}} />
                 </span>
@@ -176,8 +183,5 @@ export const Select:FC<SelectProps> = (props) => {
     </div>
   )
 }
-Select.defaultProps = {
-  name: 'viking-select',
-  placeholder: '请选择'
-}
+// Using default parameters instead of defaultProps for better TypeScript support
 export default Select;

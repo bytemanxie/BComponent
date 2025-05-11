@@ -4,55 +4,54 @@ import { FormContext } from './form'
 import { CustomRule } from './useStore'
 export type SomeRequired<T, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>
 export interface FormItemProps {
-  /**字段名 */
+  /** Field name */
   name: string;
-  /**label 标签的文本 */
+  /** Text of the label */
   label?: string;
   children?: ReactNode;
-  /**子节点的值的属性，如 checkbox 的是 'checked' */
+  /** Value property of child node, such as 'checked' for checkbox */
   valuePropName?: string;
-  /**设置收集字段值变更的时机 */
+  /** Set when to collect field value change */
   trigger?: string;
-  /**设置如何将 event 的值转换成字段值 */
+  /** Set how to convert event value to field value */
   getValueFromEvent?: (event: any) => any;
-  /**校验规则，设置字段的校验逻辑。请看 async validator 了解更多规则 */
+  /** Validation rules for field. See async validator for more rules */
   rules?: CustomRule[];
-  /**设置字段校验的时机 */
+  /** Set when to validate the field */
   validateTrigger?: string;
 }
 
 export const FormItem: FC<FormItemProps> = (props) => {
-  const {     
+  const {
     label,
     children,
     name,
-    valuePropName,
-    trigger,
-    getValueFromEvent,
+    valuePropName = 'value',
+    trigger = 'onChange',
+    getValueFromEvent = (e) => e.target.value,
     rules,
-    validateTrigger
-  } = props as SomeRequired<FormItemProps, 'getValueFromEvent' | 'trigger' | 'valuePropName' | 'validateTrigger'>
+    validateTrigger = 'onBlur'
+  } = props
   const { dispatch, fields, initialValues, validateField } = useContext(FormContext)
-  const rowClass = classNames('viking-row', {
-    'viking-row-no-label': !label
+  const rowClass = classNames('byte-row', {
+    'byte-row-no-label': !label
   })
   useEffect(() => {
     const value = (initialValues && initialValues[name]) || ''
-    dispatch({ type: 'addField', name, value: { label, name, value, rules: rules || [], errors: [], isValid: true }})
+    dispatch({ type: 'addField', name, value: { label, name, value, rules: rules || [], errors: [], isValid: true } })
   }, [])
-  // 获取store 对应的 value
   const fieldState = fields[name]
   const value = fieldState && fieldState.value
   const errors = fieldState && fieldState.errors
   const isRequired = rules?.some(rule => (typeof rule !== 'function') && rule.required)
   const hasError = errors && errors.length > 0
   const labelClass = classNames({
-    'viking-form-item-required': isRequired
+    'byte-form-item-required': isRequired
   })
-  const itemClass = classNames('viking-form-item-control', {
-    'viking-form-item-has-error': hasError
+  const itemClass = classNames('byte-form-item-control', {
+    'byte-form-item-has-error': hasError
   })
-  const onValueUpdate = (e:any) => {
+  const onValueUpdate = (e: any) => {
     const value = getValueFromEvent(e)
     console.log('new value', value)
     dispatch({ type: 'updateValue', name, value })
@@ -60,48 +59,51 @@ export const FormItem: FC<FormItemProps> = (props) => {
   const onValueValidate = async () => {
     await validateField(name)
   }
-  // 1 手动的创建一个属性列表，需要有 value 以及 onChange 属性
   const controlProps: Record<string, any> = {}
   controlProps[valuePropName] = value
   controlProps[trigger] = onValueUpdate
   if (rules) {
     controlProps[validateTrigger] = onValueValidate
   }
-  // 2 获取 children 数组的第一个元素
+  // Get the first element of the children array
   const childList = React.Children.toArray(children)
-  // 没有子组件
+  // No child component
   if (childList.length === 0) {
     console.error('No child element found in Form.Item, please provide one form component')
+    return null
   }
-  // 子组件大于一个
+  // More than one child component
   if (childList.length > 1) {
     console.warn('Only support one child element in Form.Item, others will be omitted')
   }
-  // 不是 ReactElement 的子组件
+  // Not a ReactElement child component
   if (!React.isValidElement(childList[0])) {
     console.error('Child component is not a valid React Element')
+    return null
   }
+  // Cast to ReactElement and ensure props is treated as an object
   const child = childList[0] as React.ReactElement
-  // 3 cloneElement，混合这个child 以及 手动的属性列表
-  const returnChildNode = React.cloneElement(
-    child,
-    { ...child.props, ...controlProps }
-  )
+
+  // Create merged props object explicitly to avoid type spreading issues
+  const mergedProps = Object.assign({}, child.props || {}, controlProps)
+
+  // Clone element with the merged props
+  const returnChildNode = React.cloneElement(child, mergedProps)
   return (
     <div className={rowClass}>
-      { label &&
-        <div className='viking-form-item-label'>
+      {label &&
+        <div className='byte-form-item-label'>
           <label title={label} className={labelClass}>
             {label}
           </label>
         </div>
       }
-      <div className='viking-form-item'>
+      <div className='byte-form-item'>
         <div className={itemClass}>
           {returnChildNode}
         </div>
-        { hasError && 
-          <div className='viking-form-item-explain'>
+        {hasError &&
+          <div className='byte-form-item-explain'>
             <span>{errors[0].message}</span>
           </div>
         }
@@ -110,10 +112,5 @@ export const FormItem: FC<FormItemProps> = (props) => {
   )
 }
 
-FormItem.defaultProps = {
-  valuePropName: 'value',
-  trigger: 'onChange',
-  validateTrigger: 'onBlur',
-  getValueFromEvent: (e) => e.target.value
-}
+// Default props are now set via destructuring in the component parameters
 export default FormItem

@@ -1,29 +1,34 @@
 import React from 'react'
 import { config } from 'react-transition-group'
 import { render, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 import Select, { SelectProps } from './select'
 import Option from './option'
 config.disabled = true
 
-jest.mock('../Icon/icon', () => {
-  return (props: any) => {
+// Mock the Icon component
+vi.mock('../Icon/icon', () => ({
+  default: (props: any) => {
     return <span onClick={props.onClick}>{props.icon}</span>
   }
-})
+}))
 
 const testProps: SelectProps = {
   defaultValue: '',
   placeholder: 'test',
-  onChange: jest.fn(),
-  onVisibleChange: jest.fn(),
+  onChange: vi.fn(),
+  onVisibleChange: vi.fn(),
 }
 
 const multipleProps: SelectProps = {
   ...testProps,
   multiple: true,
 }
-describe('test Select component', () => {
+describe('Select component', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
   it('should render the correct Select component', () => {
     const { getByPlaceholderText, getByText } = render(
       <Select
@@ -80,26 +85,26 @@ describe('test Select component', () => {
     // fire events
     expect(multipleProps.onChange).toHaveBeenCalledWith('id1', ['id1'])
     // add tags
-    expect(container.querySelectorAll('.viking-tag').length).toEqual(1)
-    //remove placeholder
+    expect(container.querySelectorAll('.byte-tag').length).toEqual(1)
+    // remove placeholder
     expect(inputEle.placeholder).toEqual('')
     // click 2nd item
     fireEvent.click(secondItem)
     expect(multipleProps.onChange).toHaveBeenLastCalledWith('id2', ['id1', 'id2'])
-    expect(container.querySelectorAll('.viking-tag').length).toEqual(2)
-    //reclick 2nd item
+    expect(container.querySelectorAll('.byte-tag').length).toEqual(2)
+    // reclick 2nd item
     fireEvent.click(secondItem)
-    // remove acitve class
+    // remove active class
     expect(secondItem).not.toHaveClass('is-selected')
     // remove tags
-    expect(container.querySelectorAll('.viking-tag').length).toEqual(1)
+    expect(container.querySelectorAll('.byte-tag').length).toEqual(1)
     expect(multipleProps.onChange).toHaveBeenLastCalledWith('id2', ['id1'])
     // click tag close
     fireEvent.click(getByText('times'))
     expect(multipleProps.onChange).toHaveBeenLastCalledWith('id1', [])
-    //remove all tags
-    expect(container.querySelectorAll('.viking-tag').length).toEqual(0)
-    //refill placeholder text
+    // remove all tags
+    expect(container.querySelectorAll('.byte-tag').length).toEqual(0)
+    // refill placeholder text
     expect(inputEle.placeholder).toEqual('test')
   })
 })
