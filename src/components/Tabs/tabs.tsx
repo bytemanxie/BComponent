@@ -2,33 +2,34 @@ import React, { FC, useState, FunctionComponentElement, ReactNode } from 'react'
 import classNames from 'classnames'
 import { TabItemProps } from './tabItem'
 export interface TabsProps {
-  /**当前激活 tab 面板的 index，默认为0 */
+  /** Current active tab panel index, default is 0 */
   defaultIndex?: number;
-  /**可以扩展的 className */
+  /** Additional className for styling */
   className?: string;
-  /**点击 Tab 触发的回调函数 */
+  /** Callback function triggered when tab is clicked */
   onSelect?: (selectedIndex: number) => void;
-  /**Tabs的样式，两种可选，默认为 line */
+  /** Tab style type, two options available, default is 'line' */
   type?: 'line' | 'card';
   children?: ReactNode;
 }
 
 /**
- * 选项卡切换组件。
- * 提供平级的区域将大块内容进行收纳和展现，保持界面整洁。
- * ### 引用方法
+ * Tab switching component.
+ * Provides a way to organize and display large content areas while keeping the interface clean.
  * 
- * ~~~js
- * import { Tabs } from 'vikingship'
- * ~~~
+ * ### Usage
+ * 
+ * ```jsx
+ * import { Tabs } from 'byteship'
+ * ```
  */
 export const Tabs: FC<TabsProps> = (props) => {
   const {
-    defaultIndex,
+    defaultIndex = 0,
     className,
     onSelect,
     children,
-    type
+    type = 'line'
   } = props
   const [ activeIndex, setActiveIndex ] = useState(defaultIndex)
   const handleClick = (e: React.MouseEvent, index: number, disabled: boolean | undefined) => {
@@ -39,7 +40,7 @@ export const Tabs: FC<TabsProps> = (props) => {
       }
     }
   }
-  const navClass = classNames('viking-tabs-nav', {
+  const navClass = classNames('byte-tabs-nav', {
     'nav-line': type === 'line',
     'nav-card': type === 'card',
   })
@@ -47,7 +48,7 @@ export const Tabs: FC<TabsProps> = (props) => {
     return React.Children.map(children, (child, index) => {
       const childElement = child as FunctionComponentElement<TabItemProps>
       const { label, disabled } = childElement.props
-      const classes = classNames('viking-tabs-nav-item', {
+      const classes = classNames('byte-tabs-nav-item', {
         'is-active': activeIndex === index,
         'disabled': disabled,
       })
@@ -70,19 +71,16 @@ export const Tabs: FC<TabsProps> = (props) => {
     })
   }
   return (
-    <div className={`viking-tabs ${className}`}>
+    <div className={`byte-tabs ${className ? className : ''}`}>
       <ul className={navClass}>
         {renderNavLinks()}
       </ul>
-      <div className="viking-tabs-content">
+      <div className="byte-tabs-content">
         {renderContent()}
       </div>
     </div>
   )
 }
 
-Tabs.defaultProps = {
-  defaultIndex: 0,
-  type: 'line'
-}
+// Using default parameters instead of defaultProps for better TypeScript support
 export default Tabs;

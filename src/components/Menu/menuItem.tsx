@@ -3,11 +3,11 @@ import classNames from 'classnames'
 import { MenuContext } from './menu'
 export interface MenuItemProps {
   index?: string;
-  /**选项是否被禁用 */
+  /** Whether the item is disabled */
   disabled?: boolean;
-  /**选项扩展的 className */
+  /** Additional className for the item */
   className?: string;
-  /**选项的自定义 style */
+  /** Custom style for the item */
   style?: React.CSSProperties;
   children?: ReactNode;
 }

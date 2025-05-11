@@ -5,40 +5,55 @@ import Tabs from './tabs'
 import TabItem from './tabItem'
 import Icon from '../Icon'
 const meta = {
-  title: 'Components/Component',
+  title: 'Components/Tabs',
   id: 'Tabs',
   component: Tabs,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  subcomponents: { 'TabItem': TabItem }
-} satisfies Meta<typeof Component>
+  subcomponents: { 'TabItem': TabItem },
+  argTypes: {
+    defaultIndex: { description: 'Initial active tab index', type: 'number' },
+    className: { description: 'Additional CSS class for styling', type: 'string' },
+    onSelect: { description: 'Callback when tab is selected', type: 'function' },
+    type: { description: 'Tab style type', options: ['line', 'card'], control: { type: 'radio' } }
+  }
+}
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const ADefaultTabs: ComponentStory<typeof Tabs> = (args) => (
-  <Tabs {...args}>
-    <TabItem label="选项卡一">this is content one</TabItem>
-    <TabItem label="选项卡二">this is content two</TabItem>
-    <TabItem label="用户管理">this is content three</TabItem>
-  </Tabs>
-)
-ADefaultTabs.storyName = '默认的Tabs'
-export const BCardTabs: ComponentStory<typeof Tabs> = (args) => (
-  <Tabs {...args} type="card">
-    <TabItem label='card1'>this is card one</TabItem>
-    <TabItem label="card2">this is content two</TabItem>
-    <TabItem label="disabled" disabled>this is content three</TabItem>
-  </Tabs> 
-)
-BCardTabs.storyName = '选项卡样式的Tabs'
-export const CCustomTabs: ComponentStory<typeof Tabs> = (args) => (
-  <Tabs {...args} type="card">
-    <TabItem label={<><Icon icon="check-circle" />  自定义图标</>}>this is card one</TabItem>
-    <TabItem label="tab2">this is content two</TabItem>
-  </Tabs> 
-)
-CCustomTabs.storyName = '自定义选项卡样式'
+export const ADefaultTabs = {
+  render: (args) => (
+    <Tabs {...args}>
+      <TabItem label="Tab 1">this is content one</TabItem>
+      <TabItem label="Tab 2">this is content two</TabItem>
+      <TabItem label="User Management">this is content three</TabItem>
+    </Tabs>
+  )
+} satisfies Story
+export const BCardTabs = {
+  args: {
+    type: 'card'
+  },
+  render: (args) => (
+    <Tabs {...args}>
+      <TabItem label='card1'>this is card one</TabItem>
+      <TabItem label="card2">this is content two</TabItem>
+      <TabItem label="disabled" disabled>this is content three</TabItem>
+    </Tabs>
+  )
+} satisfies Story
+export const CCustomTabs = {
+  args: {
+    type: 'card'
+  },
+  render: (args) => (
+    <Tabs {...args}>
+      <TabItem label={<><Icon icon="check-circle" />  Custom Icon</>}>this is card one</TabItem>
+      <TabItem label="tab2">this is content two</TabItem>
+    </Tabs>
+  )
+} satisfies Story

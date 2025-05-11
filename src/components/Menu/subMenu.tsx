@@ -6,9 +6,9 @@ import Icon from '../Icon/icon'
 import Transition from '../Transition/transition'
 export interface SubMenuProps {
   index?: string;
-  /**下拉菜单选项的文字 */
+  /** Text for the dropdown menu item */
   title: string;
-  /**下拉菜单选型的扩展类名 */
+  /** Additional className for the dropdown menu */
   className?: string;
   children?: ReactNode;
 }
@@ -43,7 +43,7 @@ export const SubMenu: FC<SubMenuProps> = ({ index, title, children, className}) 
     onMouseLeave: (e: React.MouseEvent) => { handleMouse(e, false)}
   } : {}
   const renderChildren = () => {
-    const subMenuClasses = classNames('viking-submenu', {
+    const subMenuClasses = classNames('byte-submenu', {
       'menu-opened': menuOpen
     })
     const childrenComponent = React.Children.map(children, (child, i) => {

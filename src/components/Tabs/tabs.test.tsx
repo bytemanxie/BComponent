@@ -1,16 +1,17 @@
 import React from 'react'
 import { render, fireEvent, RenderResult } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 import Tabs, { TabsProps } from './tabs'
 import TabItem from './tabItem'
 
 const testProps: TabsProps = {
   defaultIndex: 1,
-  onSelect: jest.fn()
+  onSelect: vi.fn()
 }
 let wrapper: RenderResult
-describe('test Tabs Component', () => {
+describe('Tabs Component', () => {
   beforeEach(() => {
     wrapper = render(
       <Tabs {...testProps}>
@@ -21,11 +22,11 @@ describe('test Tabs Component', () => {
     )
   })
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
   it('should render the correct default Tabs', () => {
     const { queryByText, container } = wrapper
-    expect(container.querySelector('.viking-tabs-nav')).toHaveClass('nav-line')
+    expect(container.querySelector('.byte-tabs-nav')).toHaveClass('nav-line')
     const activeElement = queryByText('tab2')
     expect(activeElement).toBeInTheDocument()
     expect(activeElement).toHaveClass('is-active')

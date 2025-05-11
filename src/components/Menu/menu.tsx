@@ -4,15 +4,15 @@ import { MenuItemProps } from './menuItem'
 
 type MenuMode = 'horizontal' | 'vertical'
 export interface MenuProps {
-  /**默认 active 的菜单项的索引值 */
+  /** Default active menu item index */
   defaultIndex?: string;
   className?: string;
-  /**菜单类型 横向或者纵向 */
+  /** Menu type: horizontal or vertical */
   mode?: MenuMode;
   style?: CSSProperties;
-  /**点击菜单项触发的回掉函数 */
+  /** Callback function triggered when menu item is clicked */
   onSelect?: (selectedIndex: string) => void;
-  /**设置子菜单的默认打开 只在纵向模式下生效 */
+  /** Set default open submenus, only works in vertical mode */
   defaultOpenSubMenus?: string[];
   children?: ReactNode;
 }
@@ -25,12 +25,12 @@ interface IMenuContext {
 
 export const MenuContext = createContext<IMenuContext>({index: '0'})
 /**
- * 为网站提供导航功能的菜单。支持横向纵向两种模式，支持下拉菜单。
+ * Menu component providing navigation functionality for websites. Supports horizontal and vertical modes, as well as dropdown menus.
  * 
- * ```javascript
- * import { Menu } from 'vikingship'
+ * ```jsx
+ * import { Menu } from 'byteship'
  * 
- * //然后可以使用 Menu.Item 和 Menu.Submenu 访问选项和子下拉菜单组件
+ * // Then you can use Menu.Item and Menu.Submenu to access menu items and dropdown components
  * ```
  */
 export const Menu: FC<MenuProps> = (props) => {
@@ -44,7 +44,7 @@ export const Menu: FC<MenuProps> = (props) => {
     defaultOpenSubMenus = [] 
   } = props
   const [ currentActive, setActive ] = useState(defaultIndex)
-  const classes = classNames('viking-menu', className, {
+  const classes = classNames('byte-menu', className, {
     'menu-vertical': mode === 'vertical',
     'menu-horizontal': mode !== 'vertical',
   })

@@ -1,23 +1,22 @@
 import React from 'react'
 import { render, RenderResult, fireEvent, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import Menu, {MenuProps} from './menu'
 import MenuItem from './menuItem'
 import SubMenu from './subMenu'
-jest.mock('../Icon/icon', () => {
-  return () => {
+vi.mock('../Icon/icon', () => ({
+  default: () => {
     return <i className="fa" />
   }
-})
-jest.mock('react-transition-group', () => {
-  return {
-    CSSTransition: (props: any) => {
-      return props.children
-    }
+}))
+vi.mock('react-transition-group', () => ({
+  CSSTransition: (props: any) => {
+    return props.children
   }
-})
+}))
 const testProps: MenuProps = {
   defaultIndex: '0',
-  onSelect: jest.fn(),
+  onSelect: vi.fn(),
   className: 'test'
 }
 const testVerProps: MenuProps = {
@@ -52,10 +51,10 @@ const generateMenu = (props: MenuProps) => {
 }
 const createStyleFile = () => {
   const cssFile: string = `
-    .viking-submenu {
+    .byte-submenu {
       display: none;
     }
-    .viking-submenu.menu-opened {
+    .byte-submenu.menu-opened {
       display:block;
     }
   `
@@ -65,7 +64,7 @@ const createStyleFile = () => {
   return style
 }
 let wrapper: RenderResult, wrapper2: RenderResult, menuElement: HTMLElement, activeElement: HTMLElement, disabledElement: HTMLElement
-describe('test Menu and MenuItem component in default(horizontal) mode', () => {
+describe('Menu and MenuItem component in default(horizontal) mode', () => {
   beforeEach(() => {
     wrapper = render(generateMenu(testProps))
     wrapper.container.append(createStyleFile())
@@ -75,7 +74,7 @@ describe('test Menu and MenuItem component in default(horizontal) mode', () => {
   })
   it('should render correct Menu and MenuItem based on default props', () => {
     expect(menuElement).toBeInTheDocument()
-    expect(menuElement).toHaveClass('viking-menu test')
+    expect(menuElement).toHaveClass('byte-menu test')
     expect(menuElement.querySelectorAll(':scope > li').length).toEqual(5)
     expect(activeElement).toHaveClass('menu-item is-active')
     expect(disabledElement).toHaveClass('menu-item is-disabled')
@@ -105,7 +104,7 @@ describe('test Menu and MenuItem component in default(horizontal) mode', () => {
     })
   })
 })
-describe('test Menu and MenuItem component in vertical mode', () => {
+describe('Menu and MenuItem component in vertical mode', () => {
   beforeEach(() => {
     wrapper2 = render(generateMenu(testVerProps))
     wrapper2.container.append(createStyleFile())
