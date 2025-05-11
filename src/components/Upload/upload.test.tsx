@@ -1,39 +1,46 @@
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import React from 'react'
 import axios from 'axios'
 import { render, RenderResult, fireEvent, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 import { Upload, UploadProps } from './upload'
 
-jest.mock('../Icon/icon', () => {
-  return (props: any) => {
+// Mock the Icon component
+vi.mock('../Icon/icon', () => ({
+  default: (props: any) => {
     return <span onClick={props.onClick}>{props.icon}</span>
   }
-})
-jest.mock('axios')
-const mockedAxios = axios as jest.Mocked<typeof axios>
+}))
+
+// Mock axios
+vi.mock('axios')
+const mockedAxios = axios as unknown as {
+  post: ReturnType<typeof vi.fn>
+}
 
 const testProps: UploadProps = {
   action: "fakeurl.com",
-  onSuccess: jest.fn(),
-  onChange: jest.fn(),
-  onRemove: jest.fn(),
+  onSuccess: vi.fn(),
+  onChange: vi.fn(),
+  onRemove: vi.fn(),
   drag: true
 }
 let wrapper: RenderResult, fileInput: HTMLInputElement, uploadArea: HTMLElement
 const testFile = new File(['xyz'], 'test.png', {type: 'image/png'})
-describe('test upload component', () => {
+describe('Upload component', () => {
   beforeEach(() => {
     wrapper = render(<Upload {...testProps}>Click to upload</Upload>)
-    fileInput = wrapper.container.querySelector('.viking-file-input') as HTMLInputElement
+    fileInput = wrapper.container.querySelector('.byte-file-input') as HTMLInputElement
     uploadArea = wrapper.queryByText('Click to upload') as HTMLElement
   })
-  it('upload process should works fine', async () => {
+  it('should handle upload process correctly', async () => {
     const { queryByText, getByText } = wrapper
+    // Alternative implementation:
     // mockedAxios.post.mockImplementation(() => {
     //   return Promise.resolve({'data': 'cool'})
     // })
-    mockedAxios.post.mockResolvedValue({'data': 'cool'})
+    mockedAxios.post = vi.fn().mockResolvedValue({'data': 'cool'})
     expect(uploadArea).toBeInTheDocument()
     expect(fileInput).not.toBeVisible()
     fireEvent.change(fileInput, { target: { files: [testFile ]}})
@@ -65,8 +72,8 @@ describe('test upload component', () => {
       name: 'test.png'
     }))
   })
-  it('drag and drop files should works fine', async () => {
-    mockedAxios.post.mockResolvedValue({'data': 'cool'})
+  it('should handle drag and drop files correctly', async () => {
+    mockedAxios.post = vi.fn().mockResolvedValue({'data': 'cool'})
     fireEvent.dragOver(uploadArea)
     expect(uploadArea).toHaveClass('is-dragover')
     fireEvent.dragLeave(uploadArea)
