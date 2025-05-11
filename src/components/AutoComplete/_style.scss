@@ -1,20 +1,35 @@
 .byte-auto-complete {
   position: relative;
-  width: 350px;
+
+  // Ensure the input wrapper matches the auto-complete width
+  .byte-input-wrapper {
+    width: 100%;
+  }
+
+  // Handle different input sizes
+  &.input-size-sm {
+    width: $input-width-sm;
+  }
+
+  &.input-size-md {
+    width: $input-width-md;
+  }
+
+  &.input-size-lg {
+    width: $input-width-lg;
+  }
 }
 
 .byte-suggestion-list {
   list-style: none;
   padding-left: 0;
   white-space: nowrap;
-  position: absolute;
+  position: relative;
   background: $white;
-  z-index: 100;
-  top: calc(100% + 8px);
-  left: 0;
   border: $menu-border-width solid $menu-border-color;
-  box-shadow: $submenu-box-shadow;
-  width: 100%;
+  top: 8px;
+  width: 100%; // This is 100% of the parent (.byte-auto-complete), not the viewport
+  max-width: 100%; // Ensure it doesn't exceed parent width
 
   .suggestions-loading-icon {
     display: flex;
@@ -24,10 +39,15 @@
   }
 
   .suggestion-item {
+    box-sizing: border-box;
     padding: $menu-item-padding-y $menu-item-padding-x;
     cursor: pointer;
     transition: $menu-transition;
     color: $body-color;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-bottom: $menu-border-width solid $menu-border-color;
 
     &.is-active {
       background: $menu-item-active-color !important;

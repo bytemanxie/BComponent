@@ -4,7 +4,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import Icon from '../Icon/icon'
 
 type InputSize = 'lg' | 'sm'
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size' > {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size'> {
   /**Whether to disable the Input */
   disabled?: boolean;
   /**Set input size, supports lg or sm */
@@ -15,7 +15,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size
   prepend?: string | ReactElement;
   /**Add suffix for configuring fixed combinations */
   append?: string | ReactElement;
-  onChange? : (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
@@ -38,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     style,
     ...restProps
   } = props
-  const cnames = classNames('viking-input-wrapper', {
+  const cnames = classNames('byte-input-wrapper', {
     [`input-size-${size}`]: size,
     'is-disabled': disabled,
     'input-group': prepend || append,
@@ -51,21 +51,21 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     }
     return value
   }
-  if('value' in props) {
+  if ('value' in props) {
     delete restProps.defaultValue
     restProps.value = fixControlledValue(props.value)
   }
   return (
     <div className={cnames} style={style}>
-      {prepend && <div className="viking-input-group-prepend">{prepend}</div>}
-      {icon && <div className="icon-wrapper"><Icon icon={icon} title={`title-${icon}`}/></div>}
+      {prepend && <div className="byte-input-group-prepend">{prepend}</div>}
+      {icon && <div className="icon-wrapper"><Icon icon={icon} title={`title-${icon}`} /></div>}
       <input
         ref={ref}
-        className="viking-input-inner"
+        className="byte-input-inner"
         disabled={disabled}
         {...restProps}
       />
-      {append && <div className="viking-input-group-append">{append}</div>}
+      {append && <div className="byte-input-group-append">{append}</div>}
     </div>
   )
 })

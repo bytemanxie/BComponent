@@ -19,7 +19,17 @@ const meta = {
       source: {
         type: "code",
       },
+    },
+  },
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'lg'],
+      description: 'Size of the input component'
     }
+  },
+  args: {
+    size: 'sm' // Set small size as default
   },
   tags: ['autodocs'],
   // argTypes: { onClick: { action: 'clicked' }, onSelect: { action: 'selected' }, onChange: { action: 'changed' } },
@@ -47,9 +57,9 @@ export const SimpleComplete: Story = {
   },
   render: (args) => {
     const lakers = ['bradley', 'pope', 'caruso', 'cook', 'cousins',
-    'james', 'AD', 'green', 'howard', 'kuzma', 'McGee', 'rando']
+      'james', 'AD', 'green', 'howard', 'kuzma', 'McGee', 'rando']
     const handleFetch = (query: string) => {
-      return lakers.filter(name => name.includes(query)).map(name => ({value: name}))
+      return lakers.filter(name => name.includes(query)).map(name => ({ value: name }))
     }
     return (
       <AutoComplete
@@ -63,17 +73,17 @@ export const SimpleComplete: Story = {
 
 export const BCustomComplete = (args) => {
   const lakersWithNumber = [
-    {value: 'bradley', number: 11},
-    {value: 'pope', number: 1},
-    {value: 'caruso', number: 4},
-    {value: 'cook', number: 2},
-    {value: 'cousins', number: 15},
-    {value: 'james', number: 23},
-    {value: 'AD', number: 3},
-    {value: 'green', number: 14},
-    {value: 'howard', number: 39},
-    {value: 'kuzma', number: 0},
-  ] 
+    { value: 'bradley', number: 11 },
+    { value: 'pope', number: 1 },
+    { value: 'caruso', number: 4 },
+    { value: 'cook', number: 2 },
+    { value: 'cousins', number: 15 },
+    { value: 'james', number: 23 },
+    { value: 'AD', number: 3 },
+    { value: 'green', number: 14 },
+    { value: 'howard', number: 39 },
+    { value: 'kuzma', number: 0 },
+  ]
   const handleFetch = (query: string) => {
     return lakersWithNumber.filter(player => player.value.includes(query))
   }
@@ -102,7 +112,7 @@ export const CAjaxComplete = (args) => {
     return fetch(`https://api.github.com/search/users?q=${query}`)
       .then(res => res.json())
       .then(({ items }) => {
-        return items.slice(0, 10).map((item: any) => ({ value: item.login, ...item}))
+        return items.slice(0, 10).map((item: any) => ({ value: item.login, ...item }))
       })
   }
 

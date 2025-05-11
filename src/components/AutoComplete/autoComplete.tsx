@@ -21,6 +21,8 @@ export interface AutoCompleteProps extends Omit<InputProps, 'onSelect' | 'onChan
   onChange?: (value: string) => void;
   /** Support custom rendering of dropdown items, returns ReactElement */
   renderOption?: (item: DataSourceType) => ReactElement;
+  /** Set input size, supports lg or sm */
+  size?: InputProps['size'];
 }
 
 /**
@@ -39,6 +41,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     onChange,
     value,
     renderOption,
+    size,
     ...restProps
   } = props
 
@@ -151,10 +154,15 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
       </Transition>
     )
   }
+  const autoCompleteClasses = classNames('byte-auto-complete', {
+    [`input-size-${size}`]: size
+  })
+
   return (
-    <div className="byte-auto-complete" ref={componentRef}>
+    <div className={autoCompleteClasses} ref={componentRef}>
       <Input
         {...restProps}
+        size={size}
         value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
